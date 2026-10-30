@@ -1,0 +1,116 @@
+import Foundation
+
+struct Diagnostic: Identifiable, Hashable {
+    var id: String { name }
+    let name: String
+    let romanianName: String
+    let symptoms: [String]
+    let recommendation: String
+    let emergencyContact: String
+    /// 1 = urmărire, 10 = urgență vitală. Nu este un diagnostic medical.
+    let urgency: Int
+
+    func matches(token: String) -> Bool {
+        let needle = token.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+        guard needle.count >= 3 else { return false }
+        let haystacks = ([name, romanianName] + symptoms).map {
+            $0.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+        }
+        return haystacks.contains { $0.contains(needle) || needle.contains($0) }
+    }
+}
+
+struct SymptomMatch: Identifiable {
+    let diagnostic: Diagnostic
+    let matchedSymptoms: [String]
+    var id: String { diagnostic.id }
+    var score: Int { matchedSymptoms.count }
+}
+
+struct UserAccount: Codable, Equatable {
+    var name: String
+    var passwordHash: String
+    var age: Int
+    var pulse: Int
+    var temperature: Double
+    var menopause: Bool
+
+    var nameKey: String {
+        UserAccount.key(for: name)
+    }
+
+    static func key(for name: String) -> String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines)
+            .folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+    }
+}
+
+enum HouseRoom: String, CaseIterable, Identifiable {
+    case bedroom = "Dormitor"
+    case livingRoom = "Sufragerie"
+    case kitchen = "Bucătărie"
+    case bathroom = "Baie"
+    case hallway = "Hol"
+    case balcony = "Balcon"
+
+    var id: String { rawValue }
+
+    var symbol: String {
+        switch self {
+        case .bedroom: "bed.double.fill"
+        case .livingRoom: "sofa.fill"
+        case .kitchen: "fork.knife"
+        case .bathroom: "shower.fill"
+        case .hallway: "door.left.hand.open"
+        case .balcony: "sun.max.fill"
+        }
+    }
+}
+
+enum DiagnosisMatcher {
+    static func match(_ input: String, in diagnoses: [Diagnostic]) -> [SymptomMatch] {
+        let tokens = input
+            .split { $0 == "," || $0 == ";" || $0 == "\n" }
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { $0.count >= 3 }
+
+        guard !tokens.isEmpty else { return [] }
+
+        return diagnoses.compactMap { diagnosis in
+            let hits = diagnosis.symptoms.filter { symptom in
+                tokens.contains { token in
+                    let foldedSymptom = symptom.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+                    let foldedToken = token.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
+                    return foldedSymptom == foldedToken
+                        || foldedSymptom.contains(foldedToken)
+                        || foldedToken.contains(foldedSymptom)
+                }
+            }
+            guard !hits.isEmpty else { return nil }
+            return SymptomMatch(diagnostic: diagnosis, matchedSymptoms: hits)
+        }
+        .sorted { lhs, rhs in
+            if lhs.score != rhs.score { return lhs.score > rhs.score }
+            return lhs.diagnostic.urgency > rhs.diagnostic.urgency
+        }
+    }
+
+    static func severity(for matches: [SymptomMatch]) -> Int {
+        guard let top = matches.first else { return 1 }
+        let genericOnly = top.score == 1 && top.diagnostic.symptoms.count > 2
+        if genericOnly {
+            return min(4, top.diagnostic.urgency)
+        }
+        return min(10, max(top.diagnostic.urgency, top.score * 2))
+    }
+
+    static func spokenSummary(for matches: [SymptomMatch]) -> String {
+        guard !matches.isEmpty else {
+            return "Nu am găsit o afecțiune clară. Urmăriți simptomele și sunați la 112 dacă starea se agravează."
+        }
+        let names = matches.prefix(3).map(\.diagnostic.romanianName)
+        let list = names.enumerated().map { "\($0.offset + 1). \($0.element)" }.joined(separator: ". ")
+        let top = matches[0].diagnostic
+        return "Posibile afecțiuni: \(list). Cea mai apropiată este \(top.romanianName). \(top.recommendation)"
+    }
+}
