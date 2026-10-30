@@ -1,0 +1,124 @@
+import Foundation
+
+enum CardiologyDictionary {
+    static let diagnoses: [Diagnostic] = [
+        Diagnostic(
+            name: "Angina Pectoris",
+            romanianName: "Angină pectorală",
+            symptoms: ["chest pain", "durere în piept", "durere piept", "pressure", "presiune", "fatigue", "oboseală"],
+            recommendation: "Opriți efortul și stați jos. Luați doar nitroglicerina dacă v-a fost deja prescrisă de medic. Sunați la 112 dacă durerea ține peste 15 minute.",
+            emergencyContact: "Sunați la 112 dacă durerea în piept ține peste 15 minute.",
+            urgency: 7
+        ),
+        Diagnostic(
+            name: "Myocardial Infarction",
+            romanianName: "Infarct miocardic",
+            symptoms: ["severe chest pain", "durere severă în piept", "durere puternică piept", "nausea", "greață", "sweating", "transpirație", "shortness of breath", "lipsă de aer"],
+            recommendation: "Sunați la 112 imediat. Este o urgență vitală. Nu conduceți singur și nu așteptați să treacă.",
+            emergencyContact: "Urgență. Sunați la 112 acum.",
+            urgency: 10
+        ),
+        Diagnostic(
+            name: "Chronic Heart Failure",
+            romanianName: "Insuficiență cardiacă cronică",
+            symptoms: ["swollen legs", "picioare umflate", "shortness of breath", "lipsă de aer", "fatigue", "oboseală"],
+            recommendation: "Reduceți sarea și lichidele. Luați doar diureticele deja prescrise de medic. Sunați la 112 la lipsă de aer severă.",
+            emergencyContact: "Sunați la 112 dacă nu mai puteți respira.",
+            urgency: 5
+        ),
+        Diagnostic(
+            name: "Pulmonary Edema",
+            romanianName: "Edem pulmonar",
+            symptoms: ["severe shortness of breath", "lipsă severă de aer", "nu pot respira", "restlessness", "agitație"],
+            recommendation: "Stați în șezut, cu picioarele atârnate. Sunați la 112 imediat.",
+            emergencyContact: "Urgență medicală. Sunați la 112.",
+            urgency: 9
+        ),
+        Diagnostic(
+            name: "Syncope",
+            romanianName: "Sincopă",
+            symptoms: ["fainting", "leșin", "loss of consciousness", "pierdere de cunoștință", "paleness", "paloarea"],
+            recommendation: "Așezați persoana pe o parte. Sunați la 112 dacă nu își revine.",
+            emergencyContact: "Sunați la 112 imediat dacă persoana este inconștientă.",
+            urgency: 7
+        ),
+        Diagnostic(
+            name: "Lipothymia",
+            romanianName: "Lipotimie",
+            symptoms: ["lightheadedness", "amețeală", "dizziness", "vertij"],
+            recommendation: "Stați jos sau întindeți-vă și beți apă. Anunțați familia dacă nu trece.",
+            emergencyContact: "Sunați familia sau 112 dacă starea se agravează.",
+            urgency: 4
+        ),
+        Diagnostic(
+            name: "Aortic Dissection",
+            romanianName: "Disecție de aortă",
+            symptoms: ["severe chest pain", "durere severă în piept", "unequal pulse", "puls inegal", "blood pressure difference", "diferență de tensiune"],
+            recommendation: "Sunați la 112 imediat. Rămâneți nemișcat și evitați efortul.",
+            emergencyContact: "Sunați la 112.",
+            urgency: 10
+        ),
+        Diagnostic(
+            name: "Acute Limb Ischemia",
+            romanianName: "Ischemie acută de membru",
+            symptoms: ["leg pain", "durere de picior", "cold leg", "picior rece", "absent pulse", "lipsește pulsul"],
+            recommendation: "Ridicați piciorul. Nu masați și nu puneți căldură. Sunați la 112.",
+            emergencyContact: "Sunați la 112 de urgență.",
+            urgency: 8
+        ),
+        Diagnostic(
+            name: "Thrombophlebitis",
+            romanianName: "Tromboflebită",
+            symptoms: ["leg pain", "durere de picior", "swelling", "umflătură", "tenderness", "sensibilitate"],
+            recommendation: "Ridicați piciorul și puneți o compresă rece. Consultați medicul. Sunați la 112 dacă durerea devine severă.",
+            emergencyContact: "Sunați la 112 dacă simptomele se agravează.",
+            urgency: 5
+        ),
+        Diagnostic(
+            name: "Pulmonary Embolism",
+            romanianName: "Embolie pulmonară",
+            symptoms: ["shortness of breath", "lipsă de aer", "agitation", "agitație", "fainting", "leșin"],
+            recommendation: "Sunați la 112 de urgență. Nu rămâneți singur.",
+            emergencyContact: "Sunați la 112.",
+            urgency: 9
+        ),
+        Diagnostic(
+            name: "Stroke",
+            romanianName: "Accident vascular cerebral",
+            symptoms: ["face paralysis", "paralizie față", "gură căzută", "speech difficulty", "vorbire dificilă", "arm weakness", "slăbiciune braț"],
+            recommendation: "Așezați persoana pe o parte. Notați ora. Sunați la 112 imediat.",
+            emergencyContact: "Sunați la 112.",
+            urgency: 10
+        ),
+        Diagnostic(
+            name: "Cardiac Arrest",
+            romanianName: "Stop cardiac",
+            symptoms: ["no pulse", "fără puls", "not breathing", "nu respiră", "unconscious", "inconștient"],
+            recommendation: "Începeți resuscitarea dacă știți cum și sunați la 112 imediat.",
+            emergencyContact: "Sunați la 112 imediat.",
+            urgency: 10
+        ),
+        Diagnostic(
+            name: "Endocarditis",
+            romanianName: "Endocardită",
+            symptoms: ["fever", "febră", "fatigue", "oboseală", "shortness of breath", "lipsă de aer", "heart murmur", "suflu cardiac"],
+            recommendation: "Mergeți de urgență la medic. Sunați la 112 dacă respirația se agravează.",
+            emergencyContact: "Sunați la 112 dacă starea este severă.",
+            urgency: 6
+        ),
+        Diagnostic(
+            name: "Menopause-related Fainting",
+            romanianName: "Leșin legat de menopauză",
+            symptoms: ["dizziness", "amețeală", "hot flashes", "bufeuri", "syncope", "sincopă", "leșin"],
+            recommendation: "Stați jos sau întindeți-vă, hidratați-vă și anunțați familia. Urmăriți pulsul.",
+            emergencyContact: "Sunați familia sau 112 dacă persoana își pierde cunoștința.",
+            urgency: 3
+        )
+    ]
+
+    static func search(_ query: String) -> [Diagnostic] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return diagnoses }
+        return diagnoses.filter { $0.matches(token: trimmed) }
+    }
+}
